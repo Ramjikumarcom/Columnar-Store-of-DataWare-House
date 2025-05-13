@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataWareHouse 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="XML_Schema/genericSchema.xsd"
+    Name="marketdb">
+    <DimensionTablesList>
+        <DimensionTable Name="cust_dim">
+            <DAttr name="Cust_id" type="string" />
+            <DAttr name="Customer_Name" type="string" />
+            <DAttr name="City" type="string" />
+            <DAttr name="State" type="string" />
+            <DAttr name="Customer_Segment" type="string" />
+        </DimensionTable>
+
+        <DimensionTable Name="order_dim">
+            <DAttr name="Ord_id" type="string" />
+            <DAttr name="Order_Date" type="string" />
+            <DAttr name="Order_Priority" type="string" />
+        </DimensionTable>
+
+        <DimensionTable Name="prod_dim">
+            <DAttr name="Prod_id" type="string" />
+            <DAttr name="Product_Category" type="string" />
+            <DAttr name="Product_Sub_Category" type="string" />
+        </DimensionTable>
+
+        <DimensionTable Name="shipping_dim">
+            <DAttr name="Ship_id" type="string" />
+            <DAttr name="Ship_Mode" type="string" />
+            <DAttr name="Ship_Date" type="string" />
+        </DimensionTable>
+
+    </DimensionTablesList>
+    
+    <LatticeDimensionList>
+        <LatticeDimension type="string">Product_Category</LatticeDimension>
+        <LatticeDimension type="string">Ship_Mode</LatticeDimension>
+        <!-- <LatticeDimension type="string">Order_Priority</LatticeDimension> -->
+        <LatticeDimension type="string">Customer_Segment</LatticeDimension>
+    </LatticeDimensionList>    
+    
+    <CuboidAggregations>
+        <FactAggregation column="Sales">
+            <Aggregation>SUM</Aggregation>
+        </FactAggregation>
+        <FactAggregation column="Profit">
+            <Aggregation>AVG</Aggregation>
+        </FactAggregation>
+        <!-- <FactAggregation column="Order_Quantity">
+            <Aggregation>MAX</Aggregation>
+        </FactAggregation> -->
+    </CuboidAggregations>
+    
+    <FactTable Name="fact">
+        <FKeys>
+            <FAttr name="Cust_id" type="string" />
+            <FAttr name="Ord_id" type="string" />
+            <FAttr name="Prod_id" type="string" />
+            <FAttr name="Ship_id" type="string" />
+        </FKeys>
+        <FactVariablesList>
+            <FAttr name="Discount" type="float"/>
+            <FAttr name="Sales" type="float"/>
+            <FAttr name="Order_Quantity" type="integer"/>
+            <FAttr name="Profit" type="float"/>
+            <FAttr name="Shipping_Cost" type="float"/>
+            <FAttr name="Product_Base_Margin" type="float"/>
+        </FactVariablesList>
+    </FactTable>
+</DataWareHouse>
